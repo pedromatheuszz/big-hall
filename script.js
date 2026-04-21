@@ -2,10 +2,30 @@ const { useEffect, useState } = React;
 
 const MAP_URL =
   "https://www.google.com/maps/search/?api=1&query=Av.+Alm.+Jaceguay,+2712+-+Costa+e+Silva,+Joinville+-+SC,+89218-691";
-const MENU_URL = "https://cardapiodigital.io";
 const LINKTREE_URL = "https://linktr.ee";
 const PHONE_URL = "tel:+554730131212";
 
+const BRAZIL_TZ = "America/Sao_Paulo";
+
+function nowInBrasilia() {
+  const iso = new Date().toLocaleString("sv-SE", { timeZone: BRAZIL_TZ });
+  const [datePart, timePart] = iso.split(" ");
+  const [y, m, d] = datePart.split("-").map(Number);
+  const [h, min, s] = timePart.split(":").map(Number);
+  return new Date(y, m - 1, d, h, min, s);
+}
+
+function isBigHallOpen() {
+  const now = nowInBrasilia();
+  const day = now.getDay();
+  if (day === 1) return false; // segunda‑feira
+  const hour = now.getHours();
+  return hour >= 11 && hour < 23;
+}
+
+/* ------------------------------------------------------------------ */
+/* Dados estáticos (menus, cards, textos…)                           */
+/* ------------------------------------------------------------------ */
 const serviceModes = [
   "Refeição no local",
   "Para viagem",
@@ -375,7 +395,8 @@ const dishSection = {
     "Acompanhamento com arroz, feijão, batatas fritas, farofa, salada e a carne da sua escolha. No prato acompanha 1 tipo de carne.",
   options: [
     {
-      name: "Peito de frango, peixe frito (filé empanado), frango a passarinho, bisteca, calabresa ou almôndegas",
+      name:
+        "Peito de frango, peixe frito (filé empanado), frango a passarinho, bisteca, calabresa ou almôndegas",
       price: "R$ 30,00",
     },
     {
@@ -509,7 +530,7 @@ const reviewQuotes = [
   {
     text:
       '"Experiência incrível, comida de excelente qualidade e muitas opções de buffet e sobremesas."',
-    author: "Fabio Cordeiro",
+    author: "Fábio Cordeiro",
   },
 ];
 
@@ -533,6 +554,146 @@ const contactCards = [
   },
 ];
 
+const quickFactsFresh = [
+  "4,6 (2.554)",
+  "R$ 40-60 por pessoa",
+  "Pizzaria",
+  "Aberto - Fecha 23:00",
+];
+
+const mapsActionsFresh = [
+  "Rotas",
+  "Salvar",
+  "Proximo",
+  "Enviar para o smartphone",
+  "Compartilhar",
+  "Pedir on-line",
+];
+
+const serviceModesFresh = [
+  "Refeição no local",
+  "Para viagem",
+  "Entrega sem contato",
+];
+
+const heroMetricsFresh = [
+  { value: 4.6, label: "nota média", format: "decimal" },
+  { value: 2554, label: "avaliações", format: "number" },
+  { value: 648, label: "relatos de preço", format: "number" },
+];
+
+const statHighlightsFresh = [
+  {
+    title: "Faixa de preço",
+    text: "R$ 40-60 por pessoa, informado por 648 pessoas.",
+  },
+  {
+    title: "Destaques do cardápio",
+    text: "Mais pedidos: Torre de Batata e Chapeado.",
+  },
+  {
+    title: "Localização",
+    text: "Av. Alm. Jaceguay, 2712 - Costa e Silva",
+  },
+];
+
+const aboutCardsFresh = [
+  {
+    title: "Endereço completo",
+    text: "Av. Alm. Jaceguay, 2712 - Costa e Silva, Joinville - SC, 89218-691.",
+  },
+  {
+    title: "Canais oficiais",
+    text: "linktr.ee • (47) 3013-1212",
+  },
+  {
+    title: "Horários de pico",
+    text: "Domingos: agora um pouco movimentado, com pico entre 12h e 18h.",
+    peakBars: [16, 30, 62, 80, 86, 54],
+  },
+];
+
+const reviewQuotesFresh = [
+  {
+    text: '"Tem buffet livre, prato feito, pastel, lanche, porção, pizza, açaí."',
+    author: "Resumo de avaliações",
+  },
+  {
+    text: '"Bem gostoso o ambiente, espaço kids bacana, comidinha do buffet boa."',
+    author: "Resumo de avaliações",
+  },
+  {
+    text: '"Experiência de estar no campo, com opção para toda a família e todas as idades."',
+    author: "Resumo de avaliações",
+  },
+];
+
+const featuredReviewsFresh = [
+  {
+    text:
+      "Mari Reis: no almoço de domingo (31/08/2025), comentou que a opção por quilo estava ok e com sobremesa inclusa.",
+    author: "Local Guide - 119 avaliações - 353 fotos",
+  },
+  {
+    text:
+      "Jully Valim: relatou experiência mista e ponto de atenção com item de camarão.",
+    author: "5 avaliações",
+  },
+  {
+    text:
+      "Fábio Cordeiro: destacou qualidade, variedade de buffet e sobremesas, e disse que voltaria em nova viagem.",
+    author: "Local Guide - 11 avaliações - 6 fotos",
+  },
+];
+
+const relatedPlacesFresh = [
+  "Big Hall Pizzas - 4,2 (118) - Pizza",
+  "Alcatra Burguer Joinville - 4,7 (1.114) - Restaurante",
+  "Deck Lanches Joinville - 4,7 (379) - Restaurante",
+  "Zum Schlauch - 4,5 (2.204) - Alema",
+  "Big House Burguer - 3,9 (53) - Restaurante",
+];
+
+const contactCardsFresh = [
+  {
+    label: "Endereço",
+    content:
+      "Av. Alm. Jaceguay, 2712 - Costa e Silva, Joinville - SC, 89218-691",
+  },
+  {
+    label: "Telefone",
+    content: "(47) 3013-1212",
+    href: PHONE_URL,
+  },
+  {
+    label: "Funcionamento",
+    content: "Aberto - Fecha 23:00",
+  },
+  {
+    label: "Faixa de preço",
+    content: "R$ 40-60 por pessoa (648 relatos)",
+  },
+  {
+    label: "Linktree",
+    content: "linktr.ee",
+    href: LINKTREE_URL,
+  },
+  {
+    label: "Plus code",
+    content: "P4GG+HW Costa e Silva, Joinville - SC",
+  },
+];
+
+const weeklyHoursFresh = [
+  { day: "domingo", hours: "11:00-23:00" },
+  { day: "segunda-feira", hours: "Fechado" },
+  { day: "terça-feira", hours: "11:00-23:00", note: "Os horários podem ser diferentes" },
+  { day: "quarta-feira", hours: "11:00-23:00" },
+  { day: "quinta-feira", hours: "11:00-23:00" },
+  { day: "sexta-feira", hours: "11:00-23:00" },
+  { day: "sábado", hours: "11:00-23:00" },
+];
+
 function formatMetric(value, format, suffix = "") {
   const formatted =
     format === "decimal"
@@ -541,21 +702,19 @@ function formatMetric(value, format, suffix = "") {
           maximumFractionDigits: 1,
         })
       : value.toLocaleString("pt-BR");
-
   return `${formatted}${suffix}`;
 }
 
+/* ----------------------------------------------------------------- */
+/* Componentes UI                                                    */
+/* ----------------------------------------------------------------- */
 function BigHallLogoLegacy({ compact = false }) {
   return (
     <div className={`logo-seal ${compact ? "logo-seal-compact" : ""}`}>
       <div className="logo-ring"></div>
       <div className="logo-inner">
         <span className="logo-top">Restaurante</span>
-        <svg
-          className="logo-roof"
-          viewBox="0 0 160 70"
-          aria-hidden="true"
-        >
+        <svg className="logo-roof" viewBox="0 0 160 70" aria-hidden="true">
           <path
             d="M20 42 L80 8 L140 42"
             fill="none"
@@ -572,13 +731,7 @@ function BigHallLogoLegacy({ compact = false }) {
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <path
-            d="M80 13 V58"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="6"
-            strokeLinecap="round"
-          />
+          <path d="M80 13 V58" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
         </svg>
         <strong>Big Hall</strong>
         <span className="logo-stars">★ ★ ★</span>
@@ -591,11 +744,7 @@ function BigHallLogoLegacy({ compact = false }) {
 function BigHallLogo({ compact = false }) {
   return (
     <div className={`logo-seal ${compact ? "logo-seal-compact" : ""}`}>
-      <img
-        className="logo-image"
-        src="img/big_hall_logo.png"
-        alt="Logo da Big Hall Lanchonete"
-      />
+      <img className="logo-image" src="img/big_hall_logo.png" alt="Logo da Big Hall Lanchonete" />
     </div>
   );
 }
@@ -671,6 +820,23 @@ function ContactCard({ item }) {
   );
 }
 
+function HoursCard() {
+  return (
+    <article className="contact-card">
+      <span className="contact-label">Horários de funcionamento</span>
+      <div className="hours-list">
+        {weeklyHoursFresh.map((item) => (
+          <div className="hours-row" key={item.day}>
+            <strong>{item.day}</strong>
+            <span>{item.hours}</span>
+            {item.note ? <small>{item.note}</small> : null}
+          </div>
+        ))}
+      </div>
+    </article>
+  );
+}
+
 function MenuGroup({ group }) {
   return (
     <article className="menu-group reveal">
@@ -702,9 +868,7 @@ function MenuSection({ section }) {
           text="Informações organizadas a partir do cardápio enviado, com leitura mais limpa, hierarquia visual e navegação rápida."
         />
       </div>
-      <div
-        className={`menu-groups-grid menu-groups-${section.columns || 2}`}
-      >
+      <div className={`menu-groups-grid menu-groups-${section.columns || 2}`}>
         {section.groups.map((group) => (
           <MenuGroup key={group.title} group={group} />
         ))}
@@ -734,28 +898,36 @@ function PortionsTable() {
   );
 }
 
+/* ----------------------------------------------------------------- */
+/* Componente raiz (App)                                             */
+/* ----------------------------------------------------------------- */
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // status “Aberto agora / Estamos fechados”
 
+  /* Header scroll */
   useEffect(() => {
-    const syncHeader = () => {
-      setIsScrolled(window.scrollY > 18);
-    };
-
+    const syncHeader = () => setIsScrolled(window.scrollY > 18);
     syncHeader();
     window.addEventListener("scroll", syncHeader, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", syncHeader);
-    };
+    return () => window.removeEventListener("scroll", syncHeader);
   }, []);
 
+  /* Verifica horário (a cada minuto) */
+  useEffect(() => {
+    const check = () => setIsOpen(isBigHallOpen());
+    check();
+    const timer = setInterval(check, 60_000);
+    return () => clearInterval(timer);
+  }, []);
+
+  /* Animações de reveal / métricas */
   useEffect(() => {
     const revealElements = document.querySelectorAll(".reveal");
     const metricElements = document.querySelectorAll(".metric-value");
 
     if (!("IntersectionObserver" in window)) {
-      revealElements.forEach((element) => element.classList.add("is-visible"));
+      revealElements.forEach((el) => el.classList.add("is-visible"));
       return undefined;
     }
 
@@ -781,18 +953,11 @@ function App() {
       const step = (now) => {
         const progress = Math.min((now - startTime) / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
-        const current =
-          format === "decimal" ? target * eased : Math.round(target * eased);
-
+        const current = format === "decimal" ? target * eased : Math.round(target * eased);
         element.textContent = formatMetric(current, format, suffix);
-
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        } else {
-          element.textContent = formatMetric(target, format, suffix);
-        }
+        if (progress < 1) requestAnimationFrame(step);
+        else element.textContent = formatMetric(target, format, suffix);
       };
-
       requestAnimationFrame(step);
     };
 
@@ -808,8 +973,8 @@ function App() {
       { threshold: 0.65 }
     );
 
-    revealElements.forEach((element) => revealObserver.observe(element));
-    metricElements.forEach((element) => metricObserver.observe(element));
+    revealElements.forEach((el) => revealObserver.observe(el));
+    metricElements.forEach((el) => metricObserver.observe(el));
 
     return () => {
       revealObserver.disconnect();
@@ -817,6 +982,7 @@ function App() {
     };
   }, []);
 
+  /* JSX */
   return (
     <div className="app-shell">
       <div className="ambient ambient-one"></div>
@@ -844,45 +1010,54 @@ function App() {
       </header>
 
       <main>
+        {/* HERO */}
         <section className="hero section" id="inicio">
           <div className="hero-copy reveal">
             <span className="eyebrow">
               4,6 estrelas • 2.553 avaliações • estética renovada da marca
             </span>
-            <h1>Big Hall com visual premium, identidade forte e cardápio completo.</h1>
+            <h1>
+              Big Hall com atendimento premium, identidade forte e cardápio completo.
+            </h1>
             <p className="hero-text">
-              Reposicionamos o site com uma estética preto e amarelo, presença
-              mais marcante da marca e uma vitrine profissional para pratos,
-              bebidas, porções, lanches e drinks da casa.
+              Está procurando um lugar bonito e bom para comer? Venha para o
+              Big Hall! Analise o nosso cardápio.
+            </p>
+
+            <p className="hero-text">
+              Big Hall Lanchonete · 4,6 (2.554) · R$ 40-60 · Pizzaria.
             </p>
 
             <div className="hero-actions">
               <a className="button button-accent" href="#menu-completo">
                 Ver cardápio completo
               </a>
-              <a
-                className="button button-light"
-                href={MAP_URL}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a className="button button-light" href={MAP_URL} target="_blank" rel="noreferrer">
                 Ver rotas
               </a>
             </div>
 
             <div className="service-pills" aria-label="Modalidades de atendimento">
-              {serviceModes.map((mode) => (
+              {serviceModesFresh.map((mode) => (
                 <span key={mode}>{mode}</span>
+              ))}
+            </div>
+
+            <div className="menu-pills reveal" aria-label="Ações no Google Maps">
+              {mapsActionsFresh.map((action) => (
+                <span key={action}>{action}</span>
               ))}
             </div>
           </div>
 
           <div className="hero-visual reveal">
+            {/* CARD INICIAL */}
             <article className="feature-panel feature-main">
               <div className="panel-kicker">
-                <span className="status-dot"></span>
-                Aberto agora
+                <span className={`status-dot ${isOpen ? "open" : "closed"}`}></span>
+                {isOpen ? "Aberto agora" : "Estamos fechados"}
               </div>
+
               <div className="hero-brand-block">
                 <BigHallLogo />
                 <div className="hero-brand-copy">
@@ -897,21 +1072,23 @@ function App() {
               </div>
 
               <div className="metric-grid">
-                {heroMetrics.map((metric) => (
+                {heroMetricsFresh.map((metric) => (
                   <MetricCard key={metric.label} metric={metric} />
                 ))}
               </div>
             </article>
 
+            {/* CARD “MAIS PEDIDOS” */}
             <article className="feature-panel feature-floating">
-              <span className="panel-label">Destaques do menu</span>
+              <span className="panel-label">Mais pedidos</span>
               <ul>
                 <li>Torre de Batata</li>
-                <li>Pratos feitos</li>
-                <li>Lanches gourmet</li>
+                <li>Chapeado</li>
+                <li>Pedir on-line</li>
               </ul>
             </article>
 
+            {/* CARD “ASSINATURA DA MARCA” */}
             <article className="feature-panel feature-quote">
               <span className="panel-label">Assinatura da marca</span>
               <p>
@@ -922,8 +1099,9 @@ function App() {
           </div>
         </section>
 
+        {/* STATS STRIP */}
         <section className="stats-strip reveal" aria-label="Indicadores principais">
-          {statHighlights.map((item) => (
+          {statHighlightsFresh.map((item) => (
             <article key={item.title}>
               <strong>{item.title}</strong>
               <span>{item.text}</span>
@@ -931,6 +1109,47 @@ function App() {
           ))}
         </section>
 
+        {/* VISÃO GERAL DO GOOGLE MAPS */}
+        <section className="section" id="visao-geral-google">
+          <SectionHeading
+            eyebrow="Visão geral do Google Maps"
+            title="Informações principais enviadas"
+            text="Compilado com base no conteúdo que você compartilhou."
+          />
+          <div className="menu-groups-grid menu-groups-2">
+            <article className="menu-group reveal">
+              <div className="menu-group-header">
+                <h3>Dados rápidos</h3>
+              </div>
+              <div className="stack-list">
+                {quickFactsFresh.map((fact) => (
+                  <span key={fact}>{fact}</span>
+                ))}
+                <span>
+                  Endereço: Av. Alm. Jaceguay, 2712 - Costa e Silva, Joinville - SC,
+                  89218-691
+                </span>
+                <span>Costa e Silva, Joinville - SC</span>
+              </div>
+            </article>
+
+            <article className="menu-group reveal">
+              <div className="menu-group-header">
+                <h3>Ações e canais</h3>
+              </div>
+              <div className="stack-list">
+                {mapsActionsFresh.map((action) => (
+                  <span key={action}>{action}</span>
+                ))}
+                <span>Cardápio: cardapiodigital.io</span>
+                <span>Linktree: linktr.ee</span>
+                <span>Telefone: (47) 3013-1212</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        {/* ABOUT */}
         <section className="section about" id="sobre">
           <SectionHeading
             eyebrow="Visão geral"
@@ -939,12 +1158,13 @@ function App() {
           />
 
           <div className="about-grid">
-            {aboutCards.map((item, index) => (
+            {aboutCardsFresh.map((item, index) => (
               <InfoCard key={item.title} item={item} index={index} />
             ))}
           </div>
         </section>
 
+        {/* MENU HIGHLIGHTS */}
         <section className="section menu" id="cardapio">
           <SectionHeading
             eyebrow="Destaques da casa"
@@ -959,6 +1179,7 @@ function App() {
           </div>
         </section>
 
+        {/* MENU CATALOG */}
         <section className="section menu-catalog" id="menu-completo">
           <SectionHeading
             eyebrow="Cardápio completo"
@@ -974,10 +1195,12 @@ function App() {
           </div>
         </section>
 
+        {/* MENU SECTIONS (bebidas, bar, drinks) */}
         {menuSections.map((section) => (
           <MenuSection key={section.id} section={section} />
         ))}
 
+        {/* PRATOS FEITOS */}
         <section className="section featured-dish-section" id="pratos-feitos">
           <div className="featured-dish-card reveal">
             <div className="featured-dish-copy">
@@ -996,6 +1219,7 @@ function App() {
           </div>
         </section>
 
+        {/* PORÇÕES */}
         <section className="section portions-section" id="porcoes">
           <SectionHeading
             eyebrow={portionsSection.eyebrow}
@@ -1052,6 +1276,7 @@ function App() {
           </div>
         </section>
 
+        {/* BURGERS */}
         <section className="section burgers-section" id="lanches">
           <SectionHeading
             eyebrow={gourmetBurgers.eyebrow}
@@ -1097,6 +1322,7 @@ function App() {
           </div>
         </section>
 
+        {/* REVIEWS */}
         <section className="section reviews" id="avaliacoes">
           <SectionHeading
             eyebrow="Resumo de avaliações"
@@ -1140,13 +1366,20 @@ function App() {
             </article>
 
             <div className="review-grid">
-              {reviewQuotes.map((quote) => (
+              {reviewQuotesFresh.map((quote) => (
                 <ReviewCard key={quote.text} quote={quote} />
               ))}
             </div>
           </div>
+
+          <div className="review-grid" style={{ marginTop: "1rem" }}>
+            {featuredReviewsFresh.map((quote) => (
+              <ReviewCard key={quote.text} quote={quote} />
+            ))}
+          </div>
         </section>
 
+        {/* CONTACT */}
         <section className="section contact" id="contato">
           <div className="contact-panel reveal">
             <div className="contact-copy">
@@ -1159,38 +1392,23 @@ function App() {
               </p>
             </div>
 
+            <p>(47) 3013-1212 • cardapiodigital.io • linktr.ee</p>
+
             <div className="contact-grid">
-              {contactCards.map((item) => (
+              {contactCardsFresh.map((item) => (
                 <ContactCard key={item.label} item={item} />
               ))}
+              <HoursCard />
             </div>
 
             <div className="contact-actions">
-              <a
-                className="button button-accent"
-                href={MAP_URL}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a className="button button-accent" href={MAP_URL} target="_blank" rel="noreferrer">
                 Abrir no mapa
               </a>
               <a className="button button-light" href={PHONE_URL}>
                 Falar com a loja
               </a>
-              <a
-                className="button button-outline"
-                href={MENU_URL}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Cardápio digital
-              </a>
-              <a
-                className="button button-outline"
-                href={LINKTREE_URL}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a className="button button-outline" href={LINKTREE_URL} target="_blank" rel="noreferrer">
                 Linktree
               </a>
             </div>
@@ -1198,11 +1416,16 @@ function App() {
         </section>
       </main>
 
+      {/* FOOTER */}
       <footer className="site-footer">
-        <p>Big Hall Lanchonete • Joinville, SC • Cardápio completo, drinks, porções e ambiente para todos.</p>
+        <p>
+          Big Hall Lanchonete • Joinville, SC • Cardápio completo, drinks,
+          porções e ambiente para todos.
+        </p>
         <p>© {new Date().getFullYear()} Big Hall. Todos os direitos reservados.</p>
       </footer>
 
+      {/* MOBILE BAR */}
       <div className="mobile-bar">
         <a href={PHONE_URL}>Ligar</a>
         <a href={MAP_URL} target="_blank" rel="noreferrer">
@@ -1214,5 +1437,6 @@ function App() {
   );
 }
 
+/* Renderização */
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
